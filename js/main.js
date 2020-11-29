@@ -1,40 +1,29 @@
 "use strict";
 
-
-//задание 1
-
-//если выводим и отрицательные тоже
-
-let arr = ['456554', '-407', '10784', '55', '95456558', '652', '2465'];
-
-for (let num of arr) {
-    if (num[0] === '4' || num[0] === '2') {
-        console.log(num)
-    } else if ((num[0] === '-' || num[1] === '4') && (num[0] === '-' || num[1] === '2')) {
-        console.log(num)
-    }
-};
+const week = ['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье'];
+let days = document.querySelector('.days');
+let currantDay = new Date();
 
 
-//если без отрицательных
+function createElement() {
+    let items = '<ul>';
 
-let arr2 = ['456554', '407', '10784', '55', '95456558', '652', '2465'];
+    week.forEach((el, i) => {
+        if (i === currantDay.getDay() - 1) {
+            el = el.bold()
+        }
 
-for (let num of arr2) {
-    if (num[0] === '4' || num[0] === '2') {
-        console.log(num)
-    }
-};
+        if (i === 5 || i === 6) {
+            items += '<li>' + '<i>' + el + '</i>' + '</li>'
+        } else {
+            items += '<li>' + el + '</li>'
+        }
+    });
 
+    items += '</ul>';
 
-
-//задание 2
-
-foundPrime:
-for (let i = 2; i <= 100; i++) {
-
-    for (let j = 2; j < i; j++) {
-        if (i % j == 0) continue foundPrime;
-    }
-    console.log(`${i} Делители числа: 1 и ${i}`);
+    return items;
 }
+
+
+days.innerHTML = createElement();
