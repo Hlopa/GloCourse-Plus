@@ -34,10 +34,10 @@ function getZeroToNum(num) {
 function getTime() {
 
     let dayConstr = new Date();
-    let day = weekArr[dayConstr.getDay()];
+    let day = weekArr[dayConstr.getDay()-1];
     let date = dayConstr.getDate();
     let month = monthArr[dayConstr.getMonth()];
-    let monthNumb = dayConstr.getMonth();
+    let monthNumb = dayConstr.getMonth()+1;
     let year = dayConstr.getFullYear();
     let hours = dayConstr.getHours();
     let minutes = dayConstr.getMinutes();
