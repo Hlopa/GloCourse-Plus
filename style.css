@@ -1,0 +1,17 @@
+.color-text {
+  text-align: center;
+  margin-top: 200px;
+  margin-bottom: 20px;
+  font-size: 20px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.color-btn {
+  margin: 0 auto;
+  display: block;
+  background-color: #fff;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border-width: 2px;
+}
