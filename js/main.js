@@ -1,40 +1,35 @@
 "use strict";
 
-const regicterBtn = document.querySelector('.regicter-btn'),
-    loginBtn = document.querySelector('.login-btn');
-
-let userData = {
-    user: [],
-    newUser: {},
-
-    start() {
-        userData.getName();
-        userData.getLogin();
-    },
-
-    getName() {
-        let res = prompt('Введите через пробел Имя и Фамилию пользователя');
-        if (res && res.trim().split(' ').length - 1 === 1) {
-            userData.newUser.name = res.split(' ')[0],
-            userData.newUser.surname = res.split(' ')[1]
-        }
-        else {
-            alert('Ошибка. Повторите еще раз');
-            userData.getName();
-        }
-        return res
-    },
-    getLogin() {
-        let login = prompt('Введите логин');
-        if (login) {
-            userData.newUser.login = login
-        }
-    }
-
+const DomElement = function (selector, height, width, bg, fontSize, text) {
+    this.selector = selector;
+    this.height = height;
+    this.width = width;
+    this.bg = bg;
+    this.fontSize = fontSize;
+    this.text = text;
 };
 
-regicterBtn.addEventListener('click', userData.start);
+DomElement.prototype.createElem = function () {
+    let elem;
 
+    if (this.selector[0] === '.') {
+        elem = document.createElement('div');
+        elem.classList.add(this.selector.slice(1))
+    } else if (this.selector[0] === '#') {
+        elem = document.createElement('p');
+        elem.setAttribute('id', this.selector.slice(1));
+    }
 
-console.log(userData);
+    elem.style.cssText = `
+    height: ${this.height}px;
+    width: ${this.width}px;
+    background-color: ${this.bg};
+    font-size: ${this.fontSize}px;
+    `
+    elem.textContent = this.text;
+    document.body.append(elem);
+    return elem
+};
 
+const newElem = new DomElement('.block', 50, 150, 'green', 20, 'hello');
+newElem.createElem();
