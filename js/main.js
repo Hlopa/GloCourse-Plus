@@ -1,63 +1,41 @@
-"use strict";
+window.addEventListener('DOMContentLoaded', function () {
+    "use strict";
 
-const DomElement = function (selector, height, width, bg, fontSize, text) {
-    this.selector = selector;
-    this.height = height;
-    this.width = width;
-    this.bg = bg;
-    this.fontSize = fontSize;
-    this.text = text;
-};
+    //Timer
 
-DomElement.prototype.createElem = function () {
-    let elem;
+    function countTimer(deadline) {
+        let timerHours = document.querySelector('#timer-hours'),
+            timerMinutes = document.querySelector('#timer-minutes'),
+            timerSeconds = document.querySelector('#timer-seconds');
 
-    if (this.selector[0] === '.') {
-        elem = document.createElement('div');
-        elem.classList.add(this.selector.slice(1))
-    } else if (this.selector[0] === '#') {
-        elem = document.createElement('p');
-        elem.setAttribute('id', this.selector.slice(1));
-    }
+        function getTimeRemaining() {
+            let dateStop = new Date(deadline).getTime(),
+                dateNow = new Date().getTime(),
+                timeRemaining = (dateStop - dateNow) / 1000,
+                seconds = Math.floor(timeRemaining % 60),
+                minutes = Math.floor((timeRemaining / 60) % 60),
+                hours = Math.floor(timeRemaining / 60 / 60);
+            return {
+                timeRemaining,
+                hours,
+                minutes,
+                seconds
+            };
+        };
 
-    elem.style.cssText = `
-    height: ${this.height}px;
-    width: ${this.width}px;
-    background-color: ${this.bg};
-    font-size: ${this.fontSize}px;
-    `;
-    elem.textContent = this.text;
-    document.body.append(elem);
-    return elem
-};
+        function updateClock() {
+            let timer = getTimeRemaining();
 
+            timerHours.textContent = timer.hours;
+            timerMinutes.textContent = timer.minutes;
+            timerSeconds.textContent = timer.seconds;
 
-const newElem = new DomElement('.block', 50, 150, 'green', 20, 'hello');
-newElem.createElem();
+            if (timer.timeRemaining > 0) {
+                setTimeout(updateClock, 1000)
+            }
+        };
+        updateClock();
+    };
 
-document.addEventListener("DOMContentLoaded", function (event) {
-    const square = new DomElement('.square', 100, 100, 'red').createElem();
-    square.style.position = 'absolute';
-
-    document.addEventListener('keydown', function (e) {
-        let styleSquare = getComputedStyle(square);
-        let topSquare = parseFloat(styleSquare.top);
-        let rightSquare = parseFloat(styleSquare.right);
-
-        const keyName = e.code;
-
-        if (keyName === 'ArrowUp') {
-            topSquare -= 10;
-            square.style.top = topSquare + 'px';
-        } else if (keyName === 'ArrowDown') {
-            topSquare += 10;
-            square.style.top = topSquare + 'px';
-        } else if (keyName === 'ArrowLeft') {
-            rightSquare += 10;
-            square.style.right = rightSquare + 'px';
-        } else if (keyName === 'ArrowRight') {
-            rightSquare -= 10;
-            square.style.right = rightSquare + 'px';
-        }
-    });
+    countTimer('17 december 2020');
 });
