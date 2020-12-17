@@ -1,6 +1,11 @@
 window.addEventListener('DOMContentLoaded', function () {
   "use strict";
 
+  //плавная прокрутка до якоря
+
+
+
+
   //Timer
 
   function countTimer(deadline) {
@@ -76,8 +81,34 @@ window.addEventListener('DOMContentLoaded', function () {
     })
   };
 
-
   toggleMenu();
+
+  //плавный скролл
+
+  const getSmoothScroll = () => {
+    const menu = document.querySelector('menu'),
+      ancors = menu.querySelector('ul').querySelectorAll('a'),
+      btnDown = document.querySelector('[href="#service-block"]');
+
+    const getScroll = (element) => {
+      element.addEventListener('click', function (e) {
+        e.preventDefault();
+        const blockID = element.getAttribute('href');
+        document.querySelector('' + blockID).scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        })
+      })
+    }
+
+    ancors.forEach((item) => {
+      getScroll(item)
+    });
+    getScroll(btnDown);
+  }
+
+  getSmoothScroll();
+
 
 
   //popup
