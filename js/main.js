@@ -165,12 +165,31 @@ window.addEventListener('DOMContentLoaded', function () {
 
   const slider = () => {
     const slide = document.querySelectorAll('.portfolio-item'),
-      btn = document.querySelectorAll('.portfolio-btn'),
-      dot = document.querySelectorAll('.dot'),
+      ul = document.querySelector('.portfolio-dots'),
       slider = document.querySelector('.portfolio-content');
 
     let currentSlide = 0;
     let interval;
+
+    //создает дотсы
+    const createDots = () => {
+      slide.forEach((item, index) => {
+        let li = document.createElement('li');
+        if (index === 0) {
+          li.classList.add("dot");
+          li.classList.add("dot-active")
+        } else {
+          li.classList.add("dot")
+        }
+        ul.append(li);
+
+      });
+    };
+
+    createDots();
+    let dot = document.querySelectorAll('.dot');
+
+    //функции переключения слайдов
 
     const prevSlide = (elem, index, strClass) => {
       elem[index].classList.remove(strClass);
@@ -248,7 +267,7 @@ window.addEventListener('DOMContentLoaded', function () {
         startSlide();
       }
     })
-    
+
     startSlide(2000);
   }
 
