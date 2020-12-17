@@ -57,22 +57,22 @@ window.addEventListener('DOMContentLoaded', function () {
   //Меню
 
   const toggleMenu = () => {
-    const bntMenu = document.querySelector('.menu'),
+    const body = document.body,
       menu = document.querySelector('menu');
 
     const handlerMenu = () => {
       menu.classList.toggle('active-menu');
     };
 
-    menu.addEventListener('click', (event) => {
+    body.addEventListener('click', (event) => {
       let target = event.target;
 
-      if (target.classList.contains('close-btn') || target.closest('ul')) {
+      if (target.classList.contains('close-btn') || target.closest('menu>ul') || target.closest('.menu')) {
+        handlerMenu();
+      } else if (menu.classList.contains('active-menu') && !target.closest('.menu')) {
         handlerMenu();
       }
-    });
-
-    bntMenu.addEventListener('click', handlerMenu);
+    })
   };
 
   toggleMenu();
