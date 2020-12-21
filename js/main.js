@@ -147,7 +147,7 @@ window.addEventListener('DOMContentLoaded', function () {
     popup.addEventListener('click', (event) => {
       let target = event.target;
       if (target.classList.contains('popup-close')) {
-        popUp.style.display = 'none'
+        popup.style.display = 'none'
       } else {
         target = target.closest('.popup-content');
         if (!target) {
