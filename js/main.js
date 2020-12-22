@@ -329,6 +329,9 @@ window.addEventListener('DOMContentLoaded', function () {
       calcCount = document.querySelector('.calc-count'),
       totalValue = document.getElementById('total');
 
+
+
+
     //можно вводить только цифры
     calcBlock.addEventListener('input', (e) => {
       const target = e.target;
@@ -336,6 +339,7 @@ window.addEventListener('DOMContentLoaded', function () {
         target.value = target.value.replace(/[^0-9\.]/g, '')
       }
     })
+
 
     const countSum = () => {
       let total = 0,
@@ -355,11 +359,26 @@ window.addEventListener('DOMContentLoaded', function () {
       }
 
       if (typeValue && squareValue) {
-        total = price * typeValue * squareValue * countValue * dayValue;
+        total = parseInt(price * typeValue * squareValue * countValue * dayValue);
       }
 
-      totalValue.textContent = total;
-    }
+
+      // const speed = 200;
+
+      const animateTotal = () => {
+        const target = +total;
+        const count = +totalValue.textContent;
+        const speed = 20;
+
+        if (count < target) {
+          totalValue.textContent = count + speed;
+          setTimeout(animateTotal, 1)
+        } else {
+          totalValue.textContent = total;
+        }
+      }
+      animateTotal()
+    };
 
     calcBlock.addEventListener('change', (e) => {
       const target = e.target;
