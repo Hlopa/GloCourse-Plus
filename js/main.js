@@ -1,11 +1,6 @@
 window.addEventListener('DOMContentLoaded', function () {
   "use strict";
 
-  //плавная прокрутка до якоря
-
-
-
-
   //Timer
 
   function countTimer(deadline) {
@@ -305,6 +300,37 @@ window.addEventListener('DOMContentLoaded', function () {
   }
 
   slider();
+
+
+//калькулятор
+
+  const calcBlock = document.querySelector('.calc-block');
+
+  calcBlock.addEventListener('input', (e) => {
+    const target = e.target;
+    if (target.tagName === "INPUT") {
+      target.value = target.value.replace(/[^0-9\.]/g, '')
+    }
+  })
+
+
+//блок картирнок наша команда
+
+  const imgCommands = document.querySelectorAll('.command__photo');
+
+  imgCommands.forEach((img) => {
+    let scr;
+    img.addEventListener('mouseenter', (e) => {
+      scr = e.target.src;
+      e.target.src = e.target.dataset.img
+    });
+
+    img.addEventListener('mouseleave', (e) => {
+      e.target.src = scr;
+    })
+
+  });
+
 });
 
 
