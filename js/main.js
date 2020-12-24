@@ -51,7 +51,7 @@ window.addEventListener('DOMContentLoaded', function () {
   };
 
 
-  countTimer('19 december 2020');
+  countTimer('26 december 2020');
 
 
   //Меню
@@ -342,6 +342,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
 
     const countSum = () => {
+
       let total = 0,
         countValue = 1,
         dayValue = 1;
@@ -367,7 +368,15 @@ window.addEventListener('DOMContentLoaded', function () {
       const animateTotal = () => {
         const target = +total;
         const count = +totalValue.textContent;
-        const speed = 45;
+        let speed = 20;
+
+        if (target > 5000 && target < 30000) {
+          speed = 50
+        } else if (target >= 30000 && target < 100000) {
+          speed = 200
+        } else if (target >= 100000) {
+          speed = 4000
+        }
 
         if (count < target) {
           totalValue.textContent = count + speed;
@@ -383,6 +392,7 @@ window.addEventListener('DOMContentLoaded', function () {
       const target = e.target;
 
       if (target.matches('select') || target.matches('input')) {
+
         countSum();
       }
     })
@@ -391,5 +401,4 @@ window.addEventListener('DOMContentLoaded', function () {
   calc(100);
 
 });
-
 
