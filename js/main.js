@@ -363,12 +363,11 @@ window.addEventListener('DOMContentLoaded', function () {
       }
 
 
-      // const speed = 200;
 
       const animateTotal = () => {
         const target = +total;
         const count = +totalValue.textContent;
-        const speed = 20;
+        const speed = 45;
 
         if (count < target) {
           totalValue.textContent = count + speed;
