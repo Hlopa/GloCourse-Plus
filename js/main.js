@@ -333,12 +333,43 @@ window.addEventListener('DOMContentLoaded', function () {
 
 
     //можно вводить только цифры
-    calcBlock.addEventListener('input', (e) => {
-      const target = e.target;
-      if (target.tagName === "INPUT") {
-        target.value = target.value.replace(/[^0-9\.]/g, '')
-      }
-    })
+
+    const inputTel = document.querySelectorAll('input[type="tel"]');
+    const inputName = document.querySelectorAll('input[name="user_name"]');
+    const formMes = document.querySelector('#form2-message');
+
+
+    const correctNum = (selector) => {
+      selector.addEventListener('input', (e) => {
+        const target = e.target;
+        if (target.tagName === "INPUT") {
+          target.value = target.value.replace(/[^\+?0-9\.]/g, '')
+        }
+      })
+    };
+
+    const correctName = (selector) => {
+      selector.addEventListener('input', (e) => {
+        const target = e.target;
+        if (target.tagName === "INPUT") {
+          target.value = target.value.replace(/[^а-яА-ЯЁё\s]/g, '')
+        }
+      })
+    };
+
+    const correctMessage = (selector) => {
+      selector.addEventListener('input', (e) => {
+        const target = e.target;
+        if (target.tagName === "INPUT") {
+          target.value = target.value.replace(/[^а-яА-ЯЁё\s\d\.,-]/g, '')
+        }
+      })
+    };
+
+    correctNum(calcBlock);
+    inputTel.forEach((item) => correctNum(item));
+    inputName.forEach((item) => correctName(item));
+    correctMessage(formMes);
 
 
     const countSum = () => {
@@ -362,7 +393,6 @@ window.addEventListener('DOMContentLoaded', function () {
       if (typeValue && squareValue) {
         total = parseInt(price * typeValue * squareValue * countValue * dayValue);
       }
-
 
 
       const animateTotal = () => {
@@ -401,52 +431,69 @@ window.addEventListener('DOMContentLoaded', function () {
   calc(100);
 
 
-  //send - ajax-form
+ //send - ajax-form
 
-  const sendForm = () => {
-    console.log('Hi')
-    const errorMessage = 'Что-то пошло не так...',
-      loadMessage = 'Загрузка...',
-      sucessMessage = 'Спасибо! Мы скоро с вами свяжемся';
+ const sendForm = () => {
+  const errorMessage = 'Что-то пошло не так...',
+    // loadMessage = 'Загрузка...',
+    sucessMessage = 'Спасибо! Мы скоро с вами свяжемся';
 
-    const form = document.getElementById('form1');
-    const statusMessage = document.createElement('div');
+  const form1 = document.getElementById('form1');
+  const form2 = document.getElementById('form2');
+  const form3 = document.getElementById('form3');
+  const statusMessage = document.createElement('div');
 
+  const getFormDate = (form, color) => {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       form.append(statusMessage);
+      statusMessage.textContent = '';
+      statusMessage.classList.add('loader');
+      statusMessage.style.color = `${color}`;
 
-      const request = new XMLHttpRequest();
-
-      request.addEventListener('readystatechange', () => {
-        statusMessage.textContent = loadMessage;
-
-        if (request.readyState !== 4) {
-          return
-        }
-
-        if (request.status === 200) {
-          statusMessage.textContent = sucessMessage;
-        } else {
-          statusMessage.textContent = errorMessage;
-        }
-
-      });
-
-      request.open('POST', './server.php');
-      request.setRequestHeader('Content-Type', 'application/json');
       const formData = new FormData(form);
       let body = {};
-
       for (let val of formData.entries()) {
         body[val[0]] = val[1]
       };
 
-      request.send(JSON.stringify(body));
-    })
-  }
+      postData(body, form, () => {
+        statusMessage.classList.remove('loader');
+        statusMessage.textContent = sucessMessage;
+        form.querySelectorAll('input').forEach((input) => input.value = '');
+      }, (error) => {
+        console.error(error);
+        statusMessage.classList.remove('loader');
+        statusMessage.textContent = errorMessage;
+      });
+    });
+  };
 
-  sendForm();
+  getFormDate(form1);
+  getFormDate(form2);
+  getFormDate(form3, "#fff");
+
+
+  const postData = (body, form, outputData, errorData) => {
+    const request = new XMLHttpRequest();
+    request.addEventListener('readystatechange', () => {
+      if (request.readyState !== 4) {
+        return
+      }
+      if (request.status === 200) {
+        outputData();
+      } else {
+        errorData(request.status)
+      }
+    });
+
+    request.open('POST', './server.php');
+    request.setRequestHeader('Content-Type', 'application/json');
+    request.send(JSON.stringify(body));
+  }
+}
+
+sendForm();
 
 });
 
