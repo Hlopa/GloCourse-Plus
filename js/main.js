@@ -400,5 +400,53 @@ window.addEventListener('DOMContentLoaded', function () {
 
   calc(100);
 
+
+  //send - ajax-form
+
+  const sendForm = () => {
+    console.log('Hi')
+    const errorMessage = 'Что-то пошло не так...',
+      loadMessage = 'Загрузка...',
+      sucessMessage = 'Спасибо! Мы скоро с вами свяжемся';
+
+    const form = document.getElementById('form1');
+    const statusMessage = document.createElement('div');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      form.append(statusMessage);
+
+      const request = new XMLHttpRequest();
+
+      request.addEventListener('readystatechange', () => {
+        statusMessage.textContent = loadMessage;
+
+        if (request.readyState !== 4) {
+          return
+        }
+
+        if (request.status === 200) {
+          statusMessage.textContent = sucessMessage;
+        } else {
+          statusMessage.textContent = errorMessage;
+        }
+
+      });
+
+      request.open('POST', './server.php');
+      request.setRequestHeader('Content-Type', 'application/json');
+      const formData = new FormData(form);
+      let body = {};
+
+      for (let val of formData.entries()) {
+        body[val[0]] = val[1]
+      };
+
+      request.send(JSON.stringify(body));
+    })
+  }
+
+  sendForm();
+
 });
 
